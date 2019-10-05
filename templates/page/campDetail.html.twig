@@ -1,0 +1,41 @@
+{% extends('layout/layout.html.twig') %}
+
+{% block title %} Blozo Sportkampen {% endblock %}
+{% block body %}
+    <div class="container">
+        <h1>{{ camp.title }}</h1>
+        <div class="article-container2">
+            <img class="detail-img" src={{ camp.image }}>
+            <div class="detail-container">
+                <div class="info-container">
+                    <h4>{{ camp.quote }}</h4>
+                    <br>
+                    <p>{{ camp.intro }}</p>
+                    <p> This camp takes place on {{ camp.date|date("m/d/Y") }}</p>
+                </div>
+                <h4>Leave a comment!</h4>
+                <div class="article-title d-inline-block pl-3 align-middle">
+                {{ form(form) }}
+                </div>
+                <h4>Comments</h4>
+                {% for comment in camp.comments %}
+                    <hr/>
+                <div class="comment-container">
+                    <h5>{{ comment.name }}</h5>
+                    <p>{{ comment.content }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script>
+        $('.dropdown-toggle').dropdown();
+    </script>
+{% endblock %}
+
