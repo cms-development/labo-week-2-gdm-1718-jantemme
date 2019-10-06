@@ -10,50 +10,28 @@
             <div class="col-sm-12 col-md-8">
 
                 <!-- H1 Camp -->
-                <a class="main-article-link" href="#">
+                {% if spotlight %}
+                    <a class="main-article-link" href="/sportkampen/{{ spotlight.id }}">
                     <div class="main-article mb-5 pb-3">
-                        <img src={{asset("/images/boogschieten.jpg")}} alt="boogschieten">
-                        <h1 class="text-center mt-2">Boogschieten <br>Team NMD geeft het voorbeeld</h1>
+                        <img src={{ spotlight.image}} alt="boogschieten">
+                        <h1 class="text-center mt-2">{{spotlight.title}} <br>{{spotlight.quote}}</h1>
                     </div>
                 </a>
+                {% endif %}
 
                 <!-- Supporting Camps -->
-
-                <div class="article-container my-1">
-                    <a href="camp.html">
-                        <img class="article-img" src={{asset("/images/krabpaal.png")}}>
-                        <div class="article-title d-inline-block pl-3 align-middle">
-                            <span>Krabpaaljongleren.<br> Als het kriebelt, moet je sporten.</span>
-                            <br>
-                            <span class="align-left article-details"><img class="article-author-img rounded-circle" src={{asset("/images/alien-profile.png")}}> Philippe </span>
-                            <span class="pl-5 article-details float-right"> 3 uur geleden</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="article-container my-1">
-                    <a href="#">
-                        <img class="article-img"  src={{asset("/images/marina.jpg")}}>
-                        <div class="article-title d-inline-block pl-3 align-middle">
-                            <span>Chacochewerpen <br> Marina Wally geeft het voorbeeld</span>
-                            <br>
-                            <span class="align-left article-details"><img class="article-author-img rounded-circle" src={{asset("/images/astronaut-profile.png")}}> Donald </span>
-                            <span class="pl-5 article-details float-right"> 6 dagen geleden</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="article-container my-1">
-                    <a href="#">
-                        <img class="article-img" src={{asset("/images/snelwandelen.png")}}>
-                        <div class="article-title d-inline-block pl-3 align-middle">
-                            <span>Snelwandelen: <br> Ideaal om de bus te halen</span>
-                            <br>
-                            <span class="align-left article-details"><img class="article-author-img rounded-circle" src={{asset("/images/astronaut-profile.png")}}> Ferdinand </span>
-                            <span class="pl-5 article-details float-right"> 2 weken geleden</span>
-                        </div>
-                    </a>
-                </div>
+                {% for camp in camps %}
+                    <div class="article-container my-1">
+                        <a href="/sportkampen/{{ camp.id }}">
+                            <img class="article-img" src={{ camp.image }}>
+                            <div class="article-title d-inline-block pl-3 align-middle">
+                                <span>{{ camp.title }}<br> {{ camp.quote }}</span>
+                                <br>
+                                <span class="pl-5 article-details float-right">{{ camp.date|date("m/d/Y")}}</span>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
 
             </div>
 

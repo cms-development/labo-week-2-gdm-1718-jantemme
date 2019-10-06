@@ -22,7 +22,20 @@ class PageController extends AbstractController
      */
     public function index()
     {
-        return $this->render('page/index.html.twig');
+        $repository = $this->getDoctrine()->getRepository(Camp::class);
+
+        $camps = $repository->findBy(array(),array('id'=>'DESC'),4,0);
+
+        $spotlight = $repository->findAll();
+        if($spotlight) {
+            return $this->render('page/index.html.twig',
+                ['camps' => $camps,
+                    'spotlight' => $spotlight[rand(0, count($spotlight) - 1)]]);
+        } else {
+            return $this->render('page/index.html.twig',
+                ['camps' => $camps,
+                    'spotlight' => $spotlight]);
+        }
     }
 
     /**

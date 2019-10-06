@@ -7,6 +7,10 @@ body {
 
 html {height:100%}
 
+img {
+    object-fit: cover;
+}
+
 /* NAVIGATION */
 
 
@@ -289,6 +293,7 @@ html {height:100%}
     min-width: 30px;
     text-align: center;
     align-self: center;
+    margin: 20px;
 }
 
 
