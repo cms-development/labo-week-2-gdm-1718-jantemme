@@ -1,5 +1,5 @@
 upvote = (e) => {
-    const URL = "http://127.0.0.1:8000/api/vote";
+    const URL = "/api/vote";
     let id = e.target.parentNode.id
     let data = {"id": id,"vote": "up"}
 
@@ -12,16 +12,16 @@ upvote = (e) => {
             },
             body: JSON.stringify(data)
         })
-            .then(function (response) {
+            .then(response => {
                 document.getElementById(id + "p").innerHTML = parseInt(document.getElementById(id + "p").innerHTML) + 1
             })
-            .catch(function (error) {
+            .catch(error => {
             });
     }
 }
 
 downvote = (e) => {
-    const URL = "http://127.0.0.1:8000/api/vote";
+    const URL = "/api/vote";
     let id = e.target.parentNode.id
     let data = {
         "id": id,
@@ -36,98 +36,170 @@ downvote = (e) => {
             },
             body: JSON.stringify(data)
         })
-            .then(function (response) {
+            .then(response => {
                 document.getElementById(id + "p").innerHTML = parseInt(document.getElementById(id + "p").innerHTML) - 1
             })
-            .catch(function (error) {
+            .catch(error => {
             });
     }
 }
 
 addToLikes = (id) => {
-    let double = false
+    let alreadyLiked = false
+    let situation
     if(window.localStorage.getItem('likes')) {
         let likes = JSON.parse(window.localStorage.getItem('likes'))
-        likes.forEach(function(like){
-            if(like == id) {
-                double = true
+        alreadyLiked = likes.includes(id)
+
+        if(!alreadyLiked) {
+            if(window.localStorage.getItem('dislikes'))
+            {
+                situation = returnCurrentSituation('like', id);
+            } else {
+                situation = 'neutral'
             }
-        })
-        if(!double) {
-            checkIfDislike(id)
-            likes.push(id)
-            window.localStorage.setItem('likes', JSON.stringify(likes))
-            return true
+            if(situation == 'dislike') {
+                // set this id to neutral
+                const dislikes = JSON.parse(window.localStorage.getItem('dislikes'))
+                const index = dislikes.indexOf(id);
+                dislikes.splice(index, 1);
+                window.localStorage.setItem('dislikes', JSON.stringify(dislikes))
+                return true
+            }
+            if(situation == 'neutral') {
+                // set to like
+                likes.push(id)
+                window.localStorage.setItem('likes', JSON.stringify(likes))
+                return true
+            }
         } else {
             return false
         }
+
     } else {
         let likes = new Array()
-        likes.push(id)
-        window.localStorage.setItem('likes', JSON.stringify(likes))
-        return true
+        let situation
+        if(window.localStorage.getItem('dislikes'))
+        {
+            situation = returnCurrentSituation('like', id);
+        } else {
+            situation = 'neutral'
+        }
+        if(situation == 'dislike') {
+            // set this id to neutral
+            const dislikes = JSON.parse(window.localStorage.getItem('dislikes'))
+            const index = dislikes.indexOf(id);
+            console.log(index)
+            dislikes.splice(index, 1);
+            window.localStorage.setItem('dislikes', JSON.stringify(dislikes))
+            return true
+        }
+        if(situation == 'neutral') {
+            // set to like
+            likes.push(id)
+            window.localStorage.setItem('likes', JSON.stringify(likes))
+            return true
+        }
     }
 }
 
 addToDislikes = (id) => {
-    let double = false
+    let alreadyDisliked = false
+    let situation
     if(window.localStorage.getItem('dislikes')) {
         let dislikes = JSON.parse(window.localStorage.getItem('dislikes'))
-        dislikes.forEach(function(dislike){
-            if(dislike == id) {
-                double = true
+        alreadyDisliked = dislikes.includes(id)
+
+        if(!alreadyDisliked) {
+            if(window.localStorage.getItem('likes'))
+            {
+                situation = returnCurrentSituation('dislike', id);
+            } else {
+                situation = 'neutral'
             }
-        })
-        if(!double) {
-            checkIfLike(id)
-            dislikes.push(id)
-            window.localStorage.setItem('dislikes', JSON.stringify(dislikes))
-            return true
+            if(situation == 'like') {
+                // set this id to neutral
+                const likes = JSON.parse(window.localStorage.getItem('likes'))
+                const index = likes.indexOf(id);
+                likes.splice(index, 1)
+                window.localStorage.setItem('likes', JSON.stringify(likes))
+                return true
+            }
+            if(situation == 'neutral') {
+                // set to like
+                dislikes.push(id)
+                window.localStorage.setItem('dislikes', JSON.stringify(dislikes))
+                return true
+            }
         } else {
             return false
         }
+
     } else {
-        checkIfLike(id)
         let dislikes = new Array()
-        dislikes.push(id)
-        window.localStorage.setItem('dislikes', JSON.stringify(dislikes))
-        return true
+        let situation
+        if(window.localStorage.getItem('likes'))
+        {
+            situation = returnCurrentSituation('dislike', id);
+        } else {
+            situation = 'neutral'
+        }
+        if(situation == 'like') {
+            // set this id to neutral
+            const likes = JSON.parse(window.localStorage.getItem('likes'))
+            const index = likes.indexOf(id);
+            likes.splice(0, 1);
+            window.localStorage.setItem('likes', JSON.stringify(likes))
+            return true
+        }
+        if(situation == 'neutral') {
+            // set to like
+            dislikes.push(id)
+            window.localStorage.setItem('dislikes', JSON.stringify(dislikes))
+            return true
+        }
     }
 }
 
-checkIfLike = (id) => {
-    if(window.localStorage.getItem('likes')) {
-        let likes = JSON.parse(window.localStorage.getItem('likes'))
-        likes.forEach(function (like, index) {
-            if (like == id) {
-                likes.splice(index, 1)
-                window.localStorage.setItem('likes', JSON.stringify(likes))
-            }
-        })
+function returnCurrentSituation(likeOrDislike, id) {
+
+    const likes = JSON.parse(window.localStorage.getItem('likes'))
+    const dislikes = JSON.parse(window.localStorage.getItem('dislikes'))
+
+    // if user wants to like the post
+
+    if(likeOrDislike == 'like') {
+
+        if(dislikes.includes(id)) {
+            return 'dislike';
+        }
+        else {
+            return 'neutral';
+        }
+
+    }
+
+    // if user wants to like the post
+    if(likeOrDislike == 'dislike') {
+        if(likes.includes(id)) {
+            return 'like';
+        }
+        else {
+            return 'neutral';
+        }
+
     }
 }
 
-checkIfDislike = (id) => {
-    if(window.localStorage.getItem('dislikes')) {
-        let dislikes = JSON.parse(window.localStorage.getItem('dislikes'))
-        dislikes.forEach(function (dislike, index) {
-            if (dislike == id) {
-                dislikes.splice(index, 1)
-                window.localStorage.setItem('dislikes', JSON.stringify(dislikes))
-            }
-        })
-    }
-}
+document.addEventListener('DOMContentLoaded', () => {
+    let upArrows = document.getElementsByClassName("a-vote__up")
+    let downArrows = document.getElementsByClassName("a-vote__down")
 
-document.addEventListener('DOMContentLoaded', function(event) {
-    var upArrows = document.getElementsByClassName("a-vote__up")
-    var downArrows = document.getElementsByClassName("a-vote__down")
-
-    Array.prototype.forEach.call(upArrows, function(arrow) {
+    Array.prototype.forEach.call(upArrows, arrow => {
         arrow.addEventListener('click', upvote)
     })
 
-    Array.prototype.forEach.call(downArrows, function(arrow) {
+    Array.prototype.forEach.call(downArrows, arrow => {
         arrow.addEventListener('click', downvote)
     })
 })
