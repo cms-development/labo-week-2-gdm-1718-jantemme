@@ -1,6 +1,6 @@
 {% extends('layout/layout.html.twig') %}
 
-{% block title %} Blozo Sportkampen {% endblock %}
+{% block title %} Blozo {{"Sportkampen"|trans}} {% endblock %}
 {% block body %}
     <div class="container">
         <h1>{{ camp.title }}</h1>
@@ -11,7 +11,7 @@
                     <h4>{{ camp.quote }}</h4>
                     <br>
                     <p>{{ camp.intro }}</p>
-                    <p> This camp takes place on {{ camp.date|date("m/d/Y") }}</p>
+                    <p> {{"This camp takes place on"|trans}} {{ camp.date|date("m/d/Y") }}</p>
                 </div>
                 <h4>Likes</h4>
                 <div id="{{ camp.id }}" class="m-container__vote">
@@ -19,11 +19,11 @@
                     <p id="{{ camp.id }}p" class="a-vote__number">{{ camp.likes }}</p>
                     <div class="a-vote__down" id="a-vote__down"></div>
                 </div>
-                <h4>Leave a comment!</h4>
+                <h4>{{"Leave a comment!"|trans}}</h4>
                 <div class="article-title d-inline-block pl-3 align-middle">
                 {{ form(form) }}
                 </div>
-                <h4>Comments</h4>
+                <h4>{{"Comments"|trans}}</h4>
                 {% for comment in camp.comments %}
                     <hr/>
                 <div class="comment-container">
