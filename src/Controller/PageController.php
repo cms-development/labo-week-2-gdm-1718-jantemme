@@ -16,7 +16,19 @@ use Symfony\Component\HttpFoundation\Response;
 class PageController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/", name="root")
+     * @param Request $request
+     * @return Response
+     */
+    public function root(Request $request): Response
+    {
+        $locale = $request->getPreferredLanguage($this->getParameter('activated_locales'));
+
+        return $this->redirectToRoute('index', ['_locale' => $locale]);
+    }
+
+    /**
+     * @Route("/{_locale}", name="index", requirements={"_locale"="%locales_requirements%"})
      *
      * @return Response
      */
@@ -41,7 +53,7 @@ class PageController extends AbstractController
     /**
      * @param $request
      *
-     * @Route("/addCamp", name="addCamp")
+     * @Route("/{_locale}/addCamp", name="addCamp", requirements={"_locale"="%locales_requirements%"})
      *
      * @return Response
      */
@@ -79,7 +91,7 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/sportkampen", name="sportkampen")
+     * @Route("/{_locale}/sportkampen", name="sportkampen", requirements={"_locale"="%locales_requirements%"})
      *
      * @return Response
      */
@@ -96,11 +108,14 @@ class PageController extends AbstractController
     /**
      * @param $id
      *
-     * @Route("/sportkampen/{id}", name="sportkampDetail")
-     *
+     * @param Request $request
+     * @param $_locale
      * @return Response
+     * @throws \Exception
+     * @Route("/{_locale}/sportkampen/{id}", name="sportkampDetail", requirements={"_locale"="%locales_requirements%"})
+     *
      */
-    public function sportkampDetail($id, Request $request)
+    public function sportkampDetail($id, Request $request, $_locale)
     {
         $repository = $this->getDoctrine()->getRepository(Camp::class);
         $camp = $repository->find($id);
@@ -125,7 +140,7 @@ class PageController extends AbstractController
             $entityManager->persist($data);
             $entityManager->flush();
 
-            return $this->redirect("/sportkampen/$id");
+            return $this->redirectToRoute('sportkampen', ['_locale' => $_locale, 'id' => $id]);
         }
 
         return $this->render('page/campDetail.html.twig', [

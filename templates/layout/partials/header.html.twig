@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a style="color: #fff;" class="nav-link" href="/sportkampen">{{"Sportkampen"|trans}}</a>
+                <a style="color: #fff;" class="nav-link" href="{{ path('sportkampen', {_locale: app.request.locale}) }}">{{"Sportkampen"|trans}}</a>
             </li>
             <li class="nav-item">
                 <a style="color: #fff;" class="nav-link" href="#">{{"Contacten"|trans}}</a>
@@ -25,7 +25,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#">{{"Profiel"|trans}}</a>
-                    <a class="dropdown-item" href="/addCamp">{{"Voeg kamp toe"|trans}}</a>
+                    <a class="dropdown-item" href="{{ path('addCamp', {_locale: app.request.locale}) }}">{{"Voeg kamp toe"|trans}}</a>
                     <a class="dropdown-item" href="#">{{"Uitloggen"|trans}}</a>
                 </div>
             </li>
