@@ -209,16 +209,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let likeContainers = document.getElementsByClassName("m-container__vote")
 
     for(let element of likeContainers) {
-        likes.forEach((likeId) => {
-            if(likeId == element.id) {
-                element.querySelector("#a-vote__up").style.borderBottom = "20px solid green"
-            }
-        })
-        dislikes.forEach((dislikeId) => {
-            if(dislikeId == element.id) {
-                element.querySelector("#a-vote__down").style.borderTop = "20px solid red"
-            }
-        })
+        if(likes) {
+            likes.forEach((likeId) => {
+                if (likeId == element.id) {
+                    element.querySelector("#a-vote__up").style.borderBottom = "20px solid green"
+                }
+            })
+        }
+
+        if(dislikes) {
+            dislikes.forEach((dislikeId) => {
+                if (dislikeId == element.id) {
+                    element.querySelector("#a-vote__down").style.borderTop = "20px solid red"
+                }
+            })
+        }
 
     }
 
