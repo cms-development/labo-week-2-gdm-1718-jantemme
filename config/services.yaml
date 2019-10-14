@@ -5,8 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'                         # default locale
-    activated_locales: ['%locale%','fr'] # to get as an array
-    locales_requirements: '%locale%|fr'  # to inject in controller routes requirements
+    activated_locales: ['%locale%','nl'] # to get as an array
+    locales_requirements: '%locale%|nl'  # to inject in controller routes requirements
 
 services:
     # default configuration for services in *this* file

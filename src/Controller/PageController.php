@@ -140,7 +140,7 @@ class PageController extends AbstractController
             $entityManager->persist($data);
             $entityManager->flush();
 
-            return $this->redirectToRoute('sportkampen', ['_locale' => $_locale, 'id' => $id]);
+            return $this->redirect('/' . $_locale . '/sportkampen/' . $id);
         }
 
         return $this->render('page/campDetail.html.twig', [
